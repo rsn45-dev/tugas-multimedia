@@ -68,9 +68,16 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // =========================================================
-        // PASTIKAN GANTI DENGAN KONFIGURASI PROYEK FIREBASE ANDA
-        // =========================================================
+        // ==========================================
+        // FITUR AUTO-LOGIN (CEK STATUS LOGIN AWAL)
+        // ==========================================
+        if (localStorage.getItem('login_status') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+
+        // ==========================================
+        // KONFIGURASI PROYEK FIREBASE (SUDAH FIXED REGION SG)
+        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyAH1xa2ooyq5hEwIXCKEIBujt_M5xvwLJ8",
             authDomain: "tugas-multimedia-80265.firebaseapp.com",
@@ -121,14 +128,14 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Loading state cerdas
+            // Tampilkan animasi loading
             Swal.fire({ title: 'Memproses...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
 
             if (isLoginMode) {
-                // =============== LOGIC LOGIN ===============
+                // =============== PROSES LOGIN ===============
                 signInWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
-                        // Simpan nama user ke localStorage agar bisa dipanggil di Dashboard nanti
+                        // Simpan status dan nama ke localStorage
                         localStorage.setItem('user_display_name', userCredential.user.displayName || 'Siswa');
                         localStorage.setItem('login_status', 'true');
 
@@ -140,7 +147,7 @@
                         Swal.fire({ title: 'Gagal Masuk', text: 'Email atau password salah. Silakan periksa kembali!', icon: 'error', background: '#1e1b4b', color: '#fff' });
                     });
             } else {
-                // =============== LOGIC REGISTER ===============
+                // =============== PROSES REGISTER ===============
                 const namaLengkap = document.getElementById('reg-nama').value;
                 const username = document.getElementById('reg-username').value.toLowerCase().trim();
 
@@ -150,7 +157,7 @@
 
                         // 1. Simpan Nama Lengkap ke Profil Authentication Firebase
                         return updateProfile(user, { displayName: namaLengkap }).then(() => {
-                            // 2. Simpan Data Lengkap Tambahan (termasuk Username) ke Realtime Database
+                            // 2. Simpan Data Lengkap Tambahan ke Realtime Database
                             return set(ref(database, 'users/' + user.uid), {
                                 name: namaLengkap,
                                 username: username,
@@ -161,7 +168,7 @@
                     })
                     .then(() => {
                         Swal.fire({ title: 'Pendaftaran Sukses! 🚀', text: 'Akun Anda berhasil disimpan di Firebase Cloud. Silakan login!', icon: 'success', background: '#1e1b4b', color: '#fff' }).then(() => {
-                            // Kembalikan ke mode login setelah sukses daftar
+                            // Otomatis balik ke mode login setelah sukses daftar
                             toggleMode();
                             document.getElementById('email').value = email;
                             document.getElementById('password').value = '';
