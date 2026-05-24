@@ -3,113 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Universitas Ngudi Waluyo (UNW)</title>
+    <title>Universitas Ngudi Waluyo - Website Multimedia</title>
     <style>
-        /* 1. ELEMEN ANIMASI (CSS Animation untuk Judul) */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
+        /* ==========================================
+           1. ANIMASI & UTILITY (Elemen Animasi CSS)
+           ========================================== */
+        @keyframes headerFade {
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+        @keyframes cardUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background-color: #f0f4f8;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           2. HEADER & HERO SECTION
+           ========================================== */
+        header {
+            background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to top right, #f0f4f8 50%, transparent 50%);
+        }
+
+        .header-content {
+            animation: headerFade 1.2s ease-out;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #ffb300; /* Warna Emas */
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ==========================================
+           3. CONTAINER & LAYOUT GRID
+           ========================================== */
+        .container {
+            max-width: 1100px;
+            margin: -20px auto 60px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* ==========================================
+           4. TEMPLATE CARD (Desain Kartu Elegan)
+           ========================================== */
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: cardUp 1.5s ease-out;
+            border: 1px solid rgba(13, 71, 161, 0.05);
+        }
+
+        /* Efek Interaktif Hover */
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(13, 71, 161, 0.15);
+        }
+
+        .card-header {
+            background-color: #0d47a1;
+            color: white;
+            padding: 18px 24px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header span {
+            background: #ffb300;
+            color: #0d47a1;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-body p {
+            margin-bottom: 20px;
+            color: #5a738e;
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================
+           5. GAYA ELEMEN MULTIMEDIA
+           ========================================== */
+        /* Komponen Gambar */
+        .image-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #eaeaea;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .image-container img {
+            transform: scale(1.08);
+        }
+
+        /* Komponen Audio Kustom */
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 30px;
+        }
+
+        /* Komponen Video Kustom */
+        .video-container {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Card Khusus Info Tugas */
+        .info-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
+            border: 1px solid #fbc02d;
+        }
+
+        .info-card .card-header {
+            background-color: #fbc02d;
             color: #333;
         }
 
-        header {
-            background-color: #0d47a1;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            animation: fadeIn 1.5s ease-out; /* Penerapan animasi */
+        .info-list {
+            list-style: none;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .info-list li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 1rem;
         }
 
-        .media-box {
-            margin: 30px 0;
-            padding: 20px;
-            background: #e3f2fd;
-            border-left: 5px solid #0d47a1;
-            border-radius: 4px;
+        .info-list li::before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            color: #0d47a1;
+            font-weight: bold;
         }
 
-        /* Responsive untuk gambar dan video */
-        img, video {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-
+        /* ==========================================
+           6. FOOTER
+           ========================================== */
         footer {
             text-align: center;
-            padding: 15px;
-            background: #333;
+            padding: 30px 20px;
+            background: #2c3e50;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+            margin-top: 60px;
+        }
+
+        footer strong {
             color: white;
-            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Universitas Ngudi Waluyo (UNW)</h1>
-        <p>Kampus Berbudaya Sehat dan Bereputasi Internasional</p>
+        <div class="header-content">
+            <h1>Universitas Ngudi Waluyo</h1>
+            <p>Kampus Berbudaya Sehat</p>
+        </div>
     </header>
 
     <div class="container">
-        
-        <div class="media-box">
-            <h2>1. Elemen Gambar (Profil Kampus)</h2>
-            <p>Universitas Ngudi Waluyo berkomitmen menghasilkan lulusan yang unggul dan berkarakter.</p>
-            <img src="gedung-unw.jpg" alt="Gedung Universitas Ngudi Waluyo">
-        </div>
+        <div class="grid">
 
-        <div class="media-box">
-            <h2>2. Elemen Audio (Mars UNW)</h2>
-            <p>Klik tombol play di bawah ini untuk mendengarkan lagu Mars Universitas Ngudi Waluyo:</p>
-            <audio controls>
-                <source src="mars-unw.mp3" type="audio/mpeg">
-                Browser Anda tidak mendukung pemutar audio.
-            </audio>
-        </div>
-
-        <div class="media-box">
-            <h2>3. Elemen Video (Profil Video UNW)</h2>
-            <p>Tonton video singkat mengenai profil dan fasilitas yang ada di UNW:</p>
-            <video controls width="100%">
-                <source src="video-profil.mp4" type="video/mp4">
-                Browser Anda tidak mendukung pemutar video.
-            </video>
-            
+            <div class="card">
+                <div class="card-header">
+                    Visual Kampus
+                    <span>Gambar</span>
+                </div>
+                <div class="card-body">
+                    <p>Potret keindahan lingkungan gedung utama Universitas Ngudi Waluyo yang asri dan mendukung kenyamanan belajar mahasiswa.</p>
+                    <div class="image-container">
+                        <img src="gedung-unw.jpg" alt="Gedung Rektorat UNW">
+                    </div>
+                </div>
             </div>
 
-        <div class="media-box" style="background-color: #fff9c4; border-left-color: #fbc02d;">
-            <h2>💡 Catatan Tugas: 5 Faktor Multimedia di Web Ini</h2>
-            <ul>
-                <li><strong>Teks:</strong> Digunakan pada judul, artikel informasi, dan menu navigasi.</li>
-                <li><strong>Gambar:</strong> Foto fisik gedung UNW untuk memberikan informasi visual lokasi.</li>
-                <li><strong>Audio:</strong> Musik pengiring Mars UNW menggunakan tag HTML5 <code>&lt;audio&gt;</code>.</li>
-                <li><strong>Video:</strong> Dokumentasi visual bergerak profil kampus menggunakan tag <code>&lt;video&gt;</code>.</li>
-                <li><strong>Animasi:</strong> Efek transisi halus (*Fade In*) saat teks judul "Universitas Ngudi Waluyo" pertama kali dimuat menggunakan CSS `@keyframes`.</li>
-            </ul>
-        </div>
+            <div class="card">
+                <div class="card-header">
+                    Dengarkan Mars UNW
+                    <span>Audio</span>
+                </div>
+                <div class="card-body">
+                    <p>Dengarkan lagu kebanggaan Mars Universitas Ngudi Waluyo sebagai perwujudan visi, misi, dan semangat civitas akademika.</p>
+                    <audio controls>
+                        <source src="mars-unw.mp3" type="audio/mpeg">
+                        Browser tidak mendukung elemen audio.
+                    </audio>
+                </div>
+            </div>
 
+            <div class="card">
+                <div class="card-header">
+                    Profil & Fasilitas
+                    <span>Video</span>
+                </div>
+                <div class="card-body">
+                    <p>Tonton profil singkat dan penjelajahan fasilitas modern yang ada di lingkungan kampus utama UNW.</p>
+                    <div class="video-container">
+                        <video controls>
+                            <source src="video-profil.mp4" type="video/mp4">
+                            Browser tidak mendukung elemen video.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card info-card">
+                <div class="card-header">
+                    📝 Struktur 5 Faktor Multimedia Pada Website Ini
+                </div>
+                <div class="card-body">
+                    <ul class="info-list">
+                        <li><strong>Teks:</strong> Seluruh informasi profil, judul kartu, dan penjelasan menggunakan tipografi <em>Poppins</em> yang modern dan mudah dibaca.</li>
+                        <li><strong>Gambar:</strong> Foto fisik gedung UNW yang dilengkapi efek interaktif membesar otomatis (*zoom-in*) saat kartu disentuh cursor.</li>
+                        <li><strong>Audio:</strong> Menggunakan kontrol pemutar musik HTML5 bawaan yang elegan untuk memutar file Mars UNW (`.mp3`).</li>
+                        <li><strong>Video:</strong> Pemutar video responsif dengan sudut melengkung (*border-radius*) yang menampilkan dokumenter kampus.</li>
+                        <li><strong>Animasi:</strong> Efek animasi pergeseran halus (*Fade In & Slide Up*) saat website pertama kali dibuka, serta efek transisi melayang (*Hover*) pada setiap kartu informasi.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Tugas Multimedia - rsn45-dev. All Rights Reserved.</p>
+        <p>&copy; 2026 Tugas Multimedia | Dikembangkan oleh <strong>rsn45-dev</strong></p>
     </footer>
 
 </body>
