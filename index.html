@@ -7,6 +7,22 @@
     <title>Multimedia Pembelajaran TIK</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        /* Animasi khusus untuk CD berputar saat musik menyala */
+        .putar-cd {
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
 <body
@@ -21,6 +37,19 @@
             <a href="profil.html" class="hover:text-pink-400 transition duration-300 text-yellow-300">Profil</a>
         </nav>
     </header>
+
+    <div
+        class="fixed bottom-6 right-6 z-50 bg-black/40 backdrop-blur-md p-3 rounded-full border border-white/20 flex items-center gap-3 shadow-2xl">
+        <audio id="bg-music" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+
+        <button id="music-btn" onclick="toggleMusic()"
+            class="w-12 h-12 bg-gradient-to-r from-pink-500 to-yellow-500 rounded-full flex items-center justify-center text-xl cursor-pointer shadow-lg transform hover:scale-110 transition duration-200">
+            🎵
+        </button>
+        <span id="music-status" class="text-xs font-bold pr-2 text-gray-300">Musik: OFF</span>
+    </div>
 
     <main class="container mx-auto px-6 py-12 text-center">
         <div class="animate__animated animate__zoomIn">
@@ -88,7 +117,33 @@
     </footer>
 
     <script>
-        // 1. Menghitung kunjungan pribadi user menggunakan localStorage
+        // LOGIC MUSIK BACKSOUND
+        const musik = document.getElementById('bg-music');
+        const tombolMusik = document.getElementById('music-btn');
+        const statusMusik = document.getElementById('music-status');
+
+        // Set volume awal agar tidak terlalu keras (skala 0.0 sampai 1.0)
+        musik.volume = 0.4;
+
+        function toggleMusic() {
+            if (musik.paused) {
+                musik.play();
+                tombolMusik.classList.add('putar-cd');
+                tombolMusik.innerText = '💿';
+                statusMusik.innerText = 'Musik: ON';
+                statusMusik.classList.add('text-green-400');
+                statusMusik.classList.remove('text-gray-300');
+            } else {
+                musik.pause();
+                tombolMusik.classList.remove('putar-cd');
+                tombolMusik.innerText = '🎵';
+                statusMusik.innerText = 'Musik: OFF';
+                statusMusik.classList.remove('text-green-400');
+                statusMusik.classList.add('text-gray-300');
+            }
+        }
+
+        // LOGIC STATISTIK PENGUNJUNG
         let kunjunganLokal = localStorage.getItem('jumlah_kunjungan');
         if (!kunjunganLokal) {
             kunjunganLokal = 1;
@@ -98,22 +153,16 @@
         localStorage.setItem('jumlah_kunjungan', kunjunganLokal);
         document.getElementById('user-visit').innerText = kunjunganLokal;
 
-        // 2. Simulasi Counter Pengunjung Global yang terus bertambah (efek multimedia dinamis)
-        // Kita set angka awal acak yang realistis, lalu bertambah seiring waktu
         let basisPengunjung = 3412;
         const hitungSesi = sessionStorage.getItem('basis_pengunjung');
-
         if (hitungSesi) {
             basisPengunjung = parseInt(hitungSesi);
         } else {
-            // Berikan variasi angka acak setiap user baru membuka browser
             basisPengunjung += Math.floor(Math.random() * 150);
             sessionStorage.setItem('basis_pengunjung', basisPengunjung);
         }
-
         document.getElementById('visitor-count').innerText = basisPengunjung.toLocaleString('id-ID');
 
-        // Efek "hiperaktif": Angka pengunjung global bertambah secara acak setiap beberapa detik
         setInterval(() => {
             basisPengunjung += Math.floor(Math.random() * 3) + 1;
             sessionStorage.setItem('basis_pengunjung', basisPengunjung);
