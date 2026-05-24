@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Universitas Ngudi Waluyo (UNW)</title>
+    <style>
+        /* 1. ELEMEN ANIMASI (CSS Animation untuk Judul) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        header {
+            background-color: #0d47a1;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-out; /* Penerapan animasi */
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .media-box {
+            margin: 30px 0;
+            padding: 20px;
+            background: #e3f2fd;
+            border-left: 5px solid #0d47a1;
+            border-radius: 4px;
+        }
+
+        /* Responsive untuk gambar dan video */
+        img, video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #333;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Universitas Ngudi Waluyo (UNW)</h1>
+        <p>Kampus Berbudaya Sehat dan Bereputasi Internasional</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="media-box">
+            <h2>1. Elemen Gambar (Profil Kampus)</h2>
+            <p>Universitas Ngudi Waluyo berkomitmen menghasilkan lulusan yang unggul dan berkarakter.</p>
+            <img src="gedung-unw.jpg" alt="Gedung Universitas Ngudi Waluyo">
+        </div>
+
+        <div class="media-box">
+            <h2>2. Elemen Audio (Mars UNW)</h2>
+            <p>Klik tombol play di bawah ini untuk mendengarkan lagu Mars Universitas Ngudi Waluyo:</p>
+            <audio controls>
+                <source src="mars-unw.mp3" type="audio/mpeg">
+                Browser Anda tidak mendukung pemutar audio.
+            </audio>
+        </div>
+
+        <div class="media-box">
+            <h2>3. Elemen Video (Profil Video UNW)</h2>
+            <p>Tonton video singkat mengenai profil dan fasilitas yang ada di UNW:</p>
+            <video controls width="100%">
+                <source src="video-profil.mp4" type="video/mp4">
+                Browser Anda tidak mendukung pemutar video.
+            </video>
+            
+            </div>
+
+        <div class="media-box" style="background-color: #fff9c4; border-left-color: #fbc02d;">
+            <h2>💡 Catatan Tugas: 5 Faktor Multimedia di Web Ini</h2>
+            <ul>
+                <li><strong>Teks:</strong> Digunakan pada judul, artikel informasi, dan menu navigasi.</li>
+                <li><strong>Gambar:</strong> Foto fisik gedung UNW untuk memberikan informasi visual lokasi.</li>
+                <li><strong>Audio:</strong> Musik pengiring Mars UNW menggunakan tag HTML5 <code>&lt;audio&gt;</code>.</li>
+                <li><strong>Video:</strong> Dokumentasi visual bergerak profil kampus menggunakan tag <code>&lt;video&gt;</code>.</li>
+                <li><strong>Animasi:</strong> Efek transisi halus (*Fade In*) saat teks judul "Universitas Ngudi Waluyo" pertama kali dimuat menggunakan CSS `@keyframes`.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Tugas Multimedia - rsn45-dev. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
