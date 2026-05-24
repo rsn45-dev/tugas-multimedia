@@ -13,92 +13,64 @@
 
     <header class="p-6 flex justify-between items-center bg-black/20">
         <h1 class="text-2xl font-black text-yellow-400">🎮 TIK CHALLENGE</h1>
-        <a href="index.html" class="bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition">Keluar</a>
+        <a href="index.html" class="bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition">Kembali ke Home</a>
     </header>
 
     <main
         class="container mx-auto px-6 py-8 max-w-2xl bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-xl my-auto">
-        <div id="quiz-container">
+        <div class="w-full bg-white/10 h-2 rounded-full mb-6 overflow-hidden">
+            <div id="progress-bar"
+                class="bg-gradient-to-r from-yellow-400 to-pink-500 h-full transition-all duration-300"
+                style="width: 0%"></div>
         </div>
+        <div id="quiz-container"></div>
     </main>
 
-    <footer class="text-center py-6 text-sm text-gray-500">
-        Gunakan kemampuan terbaikmu!
-    </footer>
+    <footer class="text-center py-6 text-sm text-gray-500">Uji kemampuan teknologi digital kamu!</footer>
 
     <script>
-        // Data bank soal kuis (Bisa ditambah sendiri sesuai kebutuhan)
         const dataKuis = [
-            {
-                "pertanyaan": "Apa kepanjangan dari RAM?",
-                "opsi": ["Random Access Memory", "Read Access Memory", "Run Application Module", "Real Audio Media"],
-                "jawaban": 0
-            },
-            {
-                "pertanyaan": "Perangkat mana yang berfungsi sebagai otak dari komputer?",
-                "opsi": ["Harddisk", "Monitor", "CPU", "Keyboard"],
-                "jawaban": 2
-            },
-            {
-                "pertanyaan": "Manakah yang termasuk ke dalam perangkat lunak (Software)?",
-                "opsi": ["Mouse", "Sistem Operasi Windows", "Motherboard", "Printer"],
-                "jawaban": 1
-            }
+            { "pertanyaan": "Apa kepanjangan dari RAM?", "opsi": ["Random Access Memory", "Read Access Memory", "Run Application Module", "Real Audio Media"], "jawaban": 0 },
+            { "pertanyaan": "Perangkat mana yang bertindak sebagai jembatan jaringan LAN dengan internet luar?", "opsi": ["Switch", "Router", "Hub", "Kabel UTP"], "jawaban": 1 },
+            { "pertanyaan": "Shortcut keyboard yang digunakan untuk menyalin teks (Copy) adalah...", "opsi": ["Ctrl + X", "Ctrl + V", "Ctrl + C", "Ctrl + Z"], "jawaban": 2 },
+            { "pertanyaan": "Di Excel, rumus yang dipakai untuk mencari nilai rata-rata adalah...", "opsi": ["SUM", "COUNT", "MAX", "AVERAGE"], "jawaban": 3 },
+            { "pertanyaan": "Manakah di bawah ini yang dikategorikan sebagai sistem operasi Open Source?", "opsi": ["Windows 11", "Linux Ubuntu", "macOS", "iOS"], "jawaban": 1 }
         ];
 
-        let indeksSekarang = 0;
-        let skor = 0;
+        let indeksSekarang = 0, skor = 0;
 
         function tampilkanKuis() {
-            if (indeksSekarang >= dataKuis.length) {
-                tampilkanHasil();
-                return;
-            }
+            if (indeksSekarang >= dataKuis.length) { tampilkanHasil(); return; }
+            document.getElementById('progress-bar').style.width = ((indeksSekarang / dataKuis.length) * 100) + '%';
 
             const soal = dataKuis[indeksSekarang];
-            let html = `<h2 class="text-2xl font-bold mb-6">Soal ${indeksSekarang + 1}: ${soal.pertanyaan}</h2>`;
-            html += `<div class="space-y-4">`;
-
+            let html = `<span class="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">Kategori Campuran</span>`;
+            html += `<h2 class="text-2xl font-bold mb-6">Soal ${indeksSekarang + 1}: ${soal.pertanyaan}</h2><div class="grid gap-4">`;
             soal.opsi.forEach((opsi, i) => {
-                html += `
-                    <button onclick="cekJawaban(${i})" class="w-full text-left bg-white/20 hover:bg-pink-600 p-4 rounded-xl font-semibold transition duration-200 border border-white/10 transform hover:scale-102 cursor-pointer">
-                        ${String.fromCharCode(65 + i)}. ${opsi}
-                    </button>
-                `;
+                html += `<button onclick="cekJawaban(${i})" class="w-full text-left bg-white/10 hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 p-4 rounded-xl font-semibold transition border border-white/10 cursor-pointer transform hover:scale-101">${String.fromCharCode(65 + i)}. ${opsi}</button>`;
             });
-            html += `</div>`;
-
-            document.getElementById('quiz-container').innerHTML = html;
+            document.getElementById('quiz-container').innerHTML = html + `</div>`;
         }
 
         function cekJawaban(pilihan) {
-            const jawabanBenar = dataKuis[indeksSekarang].jawaban;
-
-            if (pilihan === jawabanBenar) {
-                skor += Math.round(100 / dataKuis.length); // Pembagian skor otomatis berimbang
-                Swal.fire({ title: 'Keren! Jawaban Benar 🚀', icon: 'success', timer: 1200, showConfirmButton: false, background: '#1e1b4b', color: '#fff' });
+            if (pilihan === dataKuis[indeksSekarang].jawaban) {
+                skor += Math.round(100 / dataKuis.length);
+                Swal.fire({ title: 'Jawaban Benar! 🚀', icon: 'success', timer: 1000, showConfirmButton: false, background: '#1e1b4b', color: '#fff' });
             } else {
-                Swal.fire({ title: 'Yah, Kurang Tepat 😢', icon: 'error', timer: 1200, showConfirmButton: false, background: '#1e1b4b', color: '#fff' });
+                Swal.fire({ title: 'Salah! 😢', text: 'Kunci: ' + String.fromCharCode(65 + dataKuis[indeksSekarang].jawaban), icon: 'error', timer: 1500, showConfirmButton: false, background: '#1e1b4b', color: '#fff' });
             }
-
-            indeksSekarang++;
-            setTimeout(tampilkanKuis, 1300);
+            indeksSekarang++; setTimeout(tampilkanKuis, 1100);
         }
 
         function tampilkanHasil() {
-            // Pastikan nilai maksimal tidak lewat dari 100 karena pembulatan
-            if (skor > 100) skor = 100;
-
+            document.getElementById('progress-bar').style.width = '100%';
             document.getElementById('quiz-container').innerHTML = `
                 <div class="text-center py-8">
-                    <h2 class="text-4xl font-extrabold mb-4 text-yellow-400">Kuis Selesai! 🎉</h2>
-                    <p class="text-2xl mb-6">Total Skor Kamu: <span class="text-pink-400 font-black">${skor}</span> / 100</p>
-                    <button onclick="location.reload()" class="bg-gradient-to-r from-pink-500 to-purple-600 px-6 py-3 rounded-full font-bold hover:opacity-90 transition transform hover:scale-105 cursor-pointer">Main Lagi</button>
-                </div>
-            `;
+                    <h2 class="text-4xl font-extrabold mb-2 text-yellow-400">Kuis Selesai! 🎉</h2>
+                    <p class="text-3xl mb-6">Skor Akhir: <span class="text-pink-400 font-black">${skor > 100 ? 100 : skor}</span> / 100</p>
+                    <button onclick="location.reload()" class="bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-3 rounded-full font-bold hover:opacity-90 transition transform hover:scale-105 cursor-pointer">Coba Lagi</button>
+                </div>`;
         }
-
-        // Jalankan kuis saat halaman terbuka
         window.onload = tampilkanKuis;
     </script>
 </body>

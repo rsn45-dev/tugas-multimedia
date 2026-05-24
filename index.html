@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
-        /* Animasi khusus untuk CD berputar saat musik menyala */
         .putar-cd {
             animation: spin 4s linear infinite;
         }
@@ -31,10 +30,13 @@
     <header class="p-6 flex justify-between items-center backdrop-blur-md bg-white/10 sticky top-0 z-50">
         <h1 class="text-2xl font-black tracking-wider animate__animated animate__bounceInLeft">⚡ TIK SMART LEARNING</h1>
         <nav class="space-x-6 text-lg font-semibold">
-            <a href="index.html" class="hover:text-pink-400 transition duration-300">Home</a>
+            <a href="index.html" class="text-yellow-300">Home</a>
             <a href="materi.html" class="hover:text-pink-400 transition duration-300">Materi</a>
-            <a href="kuis.html" class="hover:text-pink-400 transition duration-300">Kuis Interaktif</a>
-            <a href="profil.html" class="hover:text-pink-400 transition duration-300 text-yellow-300">Profil</a>
+            <a href="kuis.html" class="hover:text-pink-400 transition duration-300">Kuis</a>
+            <a href="profil.html" class="hover:text-pink-400 transition duration-300">Profil</a>
+            <a href="login.html"
+                class="bg-yellow-400 text-purple-950 px-4 py-1.5 rounded-xl text-sm font-bold shadow-lg hover:bg-yellow-300 transition">Masuk
+                Kelas 🔑</a>
         </nav>
     </header>
 
@@ -43,11 +45,8 @@
         <audio id="bg-music" loop>
             <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         </audio>
-
         <button id="music-btn" onclick="toggleMusic()"
-            class="w-12 h-12 bg-gradient-to-r from-pink-500 to-yellow-500 rounded-full flex items-center justify-center text-xl cursor-pointer shadow-lg transform hover:scale-110 transition duration-200">
-            🎵
-        </button>
+            class="w-12 h-12 bg-gradient-to-r from-pink-500 to-yellow-500 rounded-full flex items-center justify-center text-xl cursor-pointer shadow-lg transform hover:scale-110 transition duration-200">🎵</button>
         <span id="music-status" class="text-xs font-bold pr-2 text-gray-300">Musik: OFF</span>
     </div>
 
@@ -55,18 +54,16 @@
         <div class="animate__animated animate__zoomIn">
             <h2
                 class="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-pink-400">
-                Belajar TIK Jadi Lebih Seru!
-            </h2>
-            <p class="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto mb-12">
-                Eksplorasi dunia teknologi, pemrograman, dan multimedia dengan metode yang interaktif dan menyenangkan.
-            </p>
+                Belajar TIK Jadi Lebih Seru!</h2>
+            <p class="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto mb-12">Eksplorasi dunia teknologi,
+                pemrograman, dan multimedia dengan metode yang interaktif dan menyenangkan.</p>
         </div>
 
         <div
             class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-16 bg-black/20 p-6 rounded-3xl backdrop-blur-md border border-white/10 animate__animated animate__fadeInUp">
             <div class="p-4 text-center">
                 <span class="block text-3xl md:text-4xl font-black text-yellow-400 font-mono"
-                    id="visitor-count">1,240</span>
+                    id="visitor-count">3,412</span>
                 <span class="text-xs md:text-sm text-purple-200 uppercase tracking-wider font-semibold">Total
                     Pengunjung</span>
             </div>
@@ -98,7 +95,6 @@
                     class="inline-block mt-4 text-pink-400 font-bold group-hover:translate-x-2 transition duration-300">Mulai
                     Belajar →</span>
             </div>
-
             <div class="bg-white/10 p-8 rounded-2xl backdrop-blur-lg border border-white/20 transform hover:scale-105 transition duration-300 hover:shadow-2xl hover:bg-white/20 group text-left cursor-pointer"
                 onclick="window.location.href='kuis.html'">
                 <div class="text-4xl mb-4 group-hover:animate-spin">🎮</div>
@@ -112,17 +108,13 @@
         </div>
     </main>
 
-    <footer class="text-center py-8 text-sm text-purple-300">
-        &copy; 2026 TIK Smart Learning - Multimedia Interaktif.
+    <footer class="text-center py-8 text-sm text-purple-300">&copy; 2026 TIK Smart Learning - Multimedia Interaktif.
     </footer>
 
     <script>
-        // LOGIC MUSIK BACKSOUND
         const musik = document.getElementById('bg-music');
         const tombolMusik = document.getElementById('music-btn');
         const statusMusik = document.getElementById('music-status');
-
-        // Set volume awal agar tidak terlalu keras (skala 0.0 sampai 1.0)
         musik.volume = 0.4;
 
         function toggleMusic() {
@@ -131,36 +123,23 @@
                 tombolMusik.classList.add('putar-cd');
                 tombolMusik.innerText = '💿';
                 statusMusik.innerText = 'Musik: ON';
-                statusMusik.classList.add('text-green-400');
-                statusMusik.classList.remove('text-gray-300');
+                statusMusik.className = 'text-xs font-bold pr-2 text-green-400';
             } else {
                 musik.pause();
                 tombolMusik.classList.remove('putar-cd');
                 tombolMusik.innerText = '🎵';
                 statusMusik.innerText = 'Musik: OFF';
-                statusMusik.classList.remove('text-green-400');
-                statusMusik.classList.add('text-gray-300');
+                statusMusik.className = 'text-xs font-bold pr-2 text-gray-300';
             }
         }
 
-        // LOGIC STATISTIK PENGUNJUNG
-        let kunjunganLokal = localStorage.getItem('jumlah_kunjungan');
-        if (!kunjunganLokal) {
-            kunjunganLokal = 1;
-        } else {
-            kunjunganLokal = parseInt(kunjunganLokal) + 1;
-        }
+        let kunjunganLokal = localStorage.getItem('jumlah_kunjungan') || 0;
+        kunjunganLokal = parseInt(kunjunganLokal) + 1;
         localStorage.setItem('jumlah_kunjungan', kunjunganLokal);
         document.getElementById('user-visit').innerText = kunjunganLokal;
 
-        let basisPengunjung = 3412;
-        const hitungSesi = sessionStorage.getItem('basis_pengunjung');
-        if (hitungSesi) {
-            basisPengunjung = parseInt(hitungSesi);
-        } else {
-            basisPengunjung += Math.floor(Math.random() * 150);
-            sessionStorage.setItem('basis_pengunjung', basisPengunjung);
-        }
+        let basisPengunjung = parseInt(sessionStorage.getItem('basis_pengunjung')) || (3412 + Math.floor(Math.random() * 150));
+        sessionStorage.setItem('basis_pengunjung', basisPengunjung);
         document.getElementById('visitor-count').innerText = basisPengunjung.toLocaleString('id-ID');
 
         setInterval(() => {

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autentikasi - TIK Smart Learning</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body
+    class="bg-gradient-to-br from-purple-900 via-indigo-950 to-slate-900 min-h-screen flex items-center justify-center p-6 text-white font-sans">
+
+    <div class="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl">
+        <div class="text-center mb-6">
+            <h2 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-pink-400">⚡
+                TIK LEARNING</h2>
+            <p class="text-sm text-gray-300 mt-2" id="form-title">Silakan login untuk mengakses dashboard</p>
+        </div>
+
+        <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-4">
+
+            <div id="register-fields" class="hidden space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">NAMA LENGKAP</label>
+                    <input type="text" id="reg-nama"
+                        class="w-full bg-black/30 border border-white/10 p-3 rounded-xl focus:outline-none focus:border-pink-500 text-white"
+                        placeholder="Rizal Satria">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">USERNAME</label>
+                    <input type="text" id="reg-username"
+                        class="w-full bg-black/30 border border-white/10 p-3 rounded-xl focus:outline-none focus:border-pink-500 text-white"
+                        placeholder="rizalsatria">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-400 mb-1">EMAIL ADDRESS</label>
+                <input type="email" id="email" required
+                    class="w-full bg-black/30 border border-white/10 p-3 rounded-xl focus:outline-none focus:border-pink-500 text-white"
+                    placeholder="nama@email.com">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-400 mb-1">PASSWORD</label>
+                <input type="password" id="password" required
+                    class="w-full bg-black/30 border border-white/10 p-3 rounded-xl focus:outline-none focus:border-pink-500 text-white"
+                    placeholder="••••••••">
+            </div>
+
+            <button type="submit" id="submit-btn"
+                class="w-full bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-xl font-bold hover:opacity-90 transform hover:scale-102 cursor-pointer shadow-lg transition mt-2">
+                Masuk
+            </button>
+        </form>
+
+        <div class="text-center mt-6 text-sm">
+            <p id="toggle-text" class="text-gray-400">
+                Belum punya akun? <span onclick="toggleMode()"
+                    class="text-yellow-400 font-bold cursor-pointer hover:underline">Daftar Sekarang</span>
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // =========================================================
+        // PASTIKAN GANTI DENGAN KONFIGURASI PROYEK FIREBASE ANDA
+        // =========================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAH1xa2ooyq5hEwIXCKEIBujt_M5xvwLJ8",
+            authDomain: "tugas-multimedia-80265.firebaseapp.com",
+            projectId: "tugas-multimedia-80265",
+            storageBucket: "tugas-multimedia-80265.firebasestorage.app",
+            messagingSenderId: "8349430135",
+            appId: "1:8349430135:web:99a606dfabf655201f3172",
+            measurementId: "G-N2GN370LJ6"
+        };
+
+        // Inisialisasi Firebase Services
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        let isLoginMode = true;
+
+        // Fungsi Berpindah antara Mode Login dan Register
+        window.toggleMode = function () {
+            isLoginMode = !isLoginMode;
+            const regFields = document.getElementById('register-fields');
+            const regNama = document.getElementById('reg-nama');
+            const regUser = document.getElementById('reg-username');
+
+            if (isLoginMode) {
+                // Mode Login
+                regFields.classList.add('hidden');
+                regNama.removeAttribute('required');
+                regUser.removeAttribute('required');
+                document.getElementById('form-title').innerText = 'Silakan login untuk mengakses dashboard';
+                document.getElementById('submit-btn').innerText = 'Masuk';
+                document.getElementById('toggle-text').innerHTML = 'Belum punya akun? <span onclick="toggleMode()" class="text-yellow-400 font-bold cursor-pointer hover:underline">Daftar Sekarang</span>';
+            } else {
+                // Mode Register
+                regFields.classList.remove('hidden');
+                regNama.setAttribute('required', 'true');
+                regUser.setAttribute('required', 'true');
+                document.getElementById('form-title').innerText = 'Lengkapi form untuk mendaftar akun baru';
+                document.getElementById('submit-btn').innerText = 'Daftar Akun Baru';
+                document.getElementById('toggle-text').innerHTML = 'Sudah punya akun? <span onclick="toggleMode()" class="text-yellow-400 font-bold cursor-pointer hover:underline">Login di sini</span>';
+            }
+        }
+
+        // Handle Proses Submit Form (Login / Register)
+        window.handleAuth = function (e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Loading state cerdas
+            Swal.fire({ title: 'Memproses...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+
+            if (isLoginMode) {
+                // =============== LOGIC LOGIN ===============
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        // Simpan nama user ke localStorage agar bisa dipanggil di Dashboard nanti
+                        localStorage.setItem('user_display_name', userCredential.user.displayName || 'Siswa');
+                        localStorage.setItem('login_status', 'true');
+
+                        Swal.fire({ title: 'Login Berhasil! 🎉', text: 'Selamat datang kembali', icon: 'success', timer: 1500, showConfirmButton: false }).then(() => {
+                            window.location.href = 'dashboard.html';
+                        });
+                    })
+                    .catch((error) => {
+                        Swal.fire({ title: 'Gagal Masuk', text: 'Email atau password salah. Silakan periksa kembali!', icon: 'error', background: '#1e1b4b', color: '#fff' });
+                    });
+            } else {
+                // =============== LOGIC REGISTER ===============
+                const namaLengkap = document.getElementById('reg-nama').value;
+                const username = document.getElementById('reg-username').value.toLowerCase().trim();
+
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+
+                        // 1. Simpan Nama Lengkap ke Profil Authentication Firebase
+                        return updateProfile(user, { displayName: namaLengkap }).then(() => {
+                            // 2. Simpan Data Lengkap Tambahan (termasuk Username) ke Realtime Database
+                            return set(ref(database, 'users/' + user.uid), {
+                                name: namaLengkap,
+                                username: username,
+                                email: email,
+                                createdAt: new Date().toISOString()
+                            });
+                        });
+                    })
+                    .then(() => {
+                        Swal.fire({ title: 'Pendaftaran Sukses! 🚀', text: 'Akun Anda berhasil disimpan di Firebase Cloud. Silakan login!', icon: 'success', background: '#1e1b4b', color: '#fff' }).then(() => {
+                            // Kembalikan ke mode login setelah sukses daftar
+                            toggleMode();
+                            document.getElementById('email').value = email;
+                            document.getElementById('password').value = '';
+                        });
+                    })
+                    .catch((error) => {
+                        let pesanError = error.message;
+                        if (error.code === 'auth/email-already-in-use') {
+                            pesanError = 'Email tersebut sudah terdaftar digunakan akun lain!';
+                        } else if (error.code === 'auth/weak-password') {
+                            pesanError = 'Password terlalu lemah! Minimal gunakan 6 karakter.';
+                        }
+                        Swal.fire({ title: 'Pendaftaran Gagal', text: pesanError, icon: 'error', background: '#1e1b4b', color: '#fff' });
+                    });
+            }
+        }
+    </script>
+</body>
+
+</html>
